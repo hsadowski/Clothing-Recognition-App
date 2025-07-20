@@ -1,0 +1,54 @@
+import React from 'react';
+import ImageUpload from '../components/ImageUpload';
+import '../styles/Home.css';
+
+const Home = () => {
+  return (
+    <div className="home-page">
+      <div className="hero-section">
+        <div className="hero-content">
+          <h1>Find Any Clothing Item From a Photo</h1>
+          <p className="hero-description">
+            Upload a picture of any clothing item you've seen online, in a magazine, or in person.
+            Our AI will identify the exact item and tell you where to buy it.
+          </p>
+        </div>
+      </div>
+      
+      <div className="upload-section">
+        <ImageUpload />
+      </div>
+      
+      <div className="features-section">
+        <h2>How It Works</h2>
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">📷</div>
+            <h3>Upload Any Photo</h3>
+            <p>Take a picture or screenshot of clothing you like. Our app works even with partial images.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">🔍</div>
+            <h3>AI Recognition</h3>
+            <p>Our advanced AI analyses the image to identify the exact item by recognizing patterns, textures, and designs.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">🛍️</div>
+            <h3>Find Where to Buy</h3>
+            <p>Get direct links to retailers where you can purchase the item, along with pricing and product details.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="cta-section">
+        <h2>Ready to Find That Perfect Item?</h2>
+        <p>Upload a photo now and discover where to buy it in seconds.</p>
+        <a href="#upload" className="cta-button">Upload a Photo</a>
+      </div>
+    </div>
+  );
+};
+
+export default Home;

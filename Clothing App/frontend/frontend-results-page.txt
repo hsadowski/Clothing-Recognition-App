@@ -1,0 +1,130 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import ProductCard from '../components/ProductCard';
+import api from '../services/api';
+import '../styles/Results.css';
+
+const Results = () => {
+  const { imageId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [results, setResults] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+
+  // Load search results on component mount
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        setLoading(true);
+        setError('');
+        
+        // Get search results
+        const searchResults = await api.searchByImage(imageId, {
+          limit: 10,
+          threshold: 0.5
+        });
+        
+        setResults(searchResults);
+        
+        // Load uploaded image
+        try {
+          const imageUrl = `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/uploads/${imageId}`;
+          setUploadedImage(imageUrl);
+        } catch (err) {
+          console.error('Error loading image:', err);
+          // Continue even if image loading fails
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to load search results');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    if (imageId) {
+      fetchResults();
+    } else {
+      setError('No image ID provided');
+      setLoading(false);
+    }
+  }, [imageId]);
+
+  // Render loading state
+  if (loading) {
+    return (
+      <div className="results-page">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Analyzing your image...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render error state
+  if (error) {
+    return (
+      <div className="results-page">
+        <div className="error-container">
+          <h2>Error</h2>
+          <p>{error}</p>
+          <Link to="/" className="back-button">Try Again</Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Render no results state
+  if (!results || !results.matches || results.matches.length === 0) {
+    return (
+      <div className="results-page">
+        <div className="no-results-container">
+          <h2>No Matches Found</h2>
+          <p>We couldn't find any matching clothing items. Try with another image.</p>
+          <Link to="/" className="back-button">Try Again</Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="results-page">
+      <div className="results-header">
+        <h1>Search Results</h1>
+        <p className="results-message">{results.message}</p>
+      </div>
+      
+      <div className="results-content">
+        <div className="uploaded-image-container">
+          <h3>Your Image</h3>
+          {uploadedImage ? (
+            <img 
+              src={uploadedImage} 
+              alt="Uploaded" 
+              className="uploaded-image"
+              onError={() => setUploadedImage(null)}
+            />
+          ) : (
+            <div className="image-placeholder">
+              <p>Image preview not available</p>
+            </div>
+          )}
+          <Link to="/" className="new-search-button">
+            New Search
+          </Link>
+        </div>
+        
+        <div className="matches-container">
+          <h3>Matching Products</h3>
+          <div className="product-grid">
+            {results.matches.map((product, index) => (
+              <ProductCard key={`${product.product_id}-${index}`} product={product} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Results;

@@ -1,0 +1,89 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import '../styles/Navbar.css';
+
+const Navbar = () => {
+  const { currentUser, isAuthenticated, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+    setMenuOpen(false);
+  };
+
+  // Toggle mobile menu
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  // Close menu when clicking a link
+  const handleLinkClick = () => {
+    setMenuOpen(false);
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo" onClick={handleLinkClick}>
+          <span className="logo-icon">👕</span>
+          <span className="logo-text">Clothing Finder</span>
+        </Link>
+
+        {/* Mobile menu button */}
+        <div className="menu-icon" onClick={toggleMenu}>
+          <i className={menuOpen ? 'fas fa-times' : 'fas fa-bars'}>
+            {menuOpen ? '✕' : '☰'}
+          </i>
+        </div>
+
+        {/* Nav menu */}
+        <ul className={menuOpen ? 'nav-menu active' : 'nav-menu'}>
+          <li className="nav-item">
+            <Link to="/" className="nav-link" onClick={handleLinkClick}>
+              Home
+            </Link>
+          </li>
+
+          {isAuthenticated ? (
+            <>
+              <li className="nav-item">
+                <Link to="/history" className="nav-link" onClick={handleLinkClick}>
+                  My History
+                </Link>
+              </li>
+              <li className="nav-item">
+                <span className="nav-user">
+                  {currentUser?.email}
+                </span>
+              </li>
+              <li className="nav-item">
+                <button className="nav-button logout" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item">
+                <Link to="/login" className="nav-link" onClick={handleLinkClick}>
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register" className="nav-button register" onClick={handleLinkClick}>
+                  Sign Up
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

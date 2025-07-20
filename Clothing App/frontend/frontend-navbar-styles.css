@@ -1,0 +1,145 @@
+.navbar {
+  background-color: var(--primary-color);
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 1rem;
+}
+
+.navbar-logo {
+  color: white;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.navbar-logo:hover {
+  text-decoration: none;
+}
+
+.logo-icon {
+  margin-right: 0.5rem;
+}
+
+.menu-icon {
+  display: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-item {
+  margin-left: 1.5rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.nav-button {
+  background-color: transparent;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.nav-button.register {
+  background-color: white;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.nav-button.register:hover {
+  background-color: #f5f5f5;
+  text-decoration: none;
+}
+
+.nav-button.logout {
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+.nav-button.logout:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-user {
+  color: white;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+/* Mobile navigation styles */
+@media screen and (max-width: 960px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: -100%;
+    opacity: 1;
+    transition: all 0.5s ease;
+    background-color: var(--primary-dark);
+  }
+
+  .nav-menu.active {
+    left: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 1;
+  }
+
+  .nav-item {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-button {
+    width: 80%;
+    margin: 0.5rem auto;
+    display: block;
+  }
+}

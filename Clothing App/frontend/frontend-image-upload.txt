@@ -1,0 +1,175 @@
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import '../styles/ImageUpload.css';
+
+const ImageUpload = () => {
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+
+  // Handle file selection
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    
+    if (!selectedFile) {
+      return;
+    }
+    
+    // Check file type
+    if (!selectedFile.type.startsWith('image/')) {
+      setError('Please select an image file.');
+      return;
+    }
+    
+    // Check file size (max 16MB)
+    if (selectedFile.size > 16 * 1024 * 1024) {
+      setError('Image size should not exceed 16MB.');
+      return;
+    }
+    
+    setFile(selectedFile);
+    setError('');
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(selectedFile);
+  };
+
+  // Handle drag over
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  // Handle drop
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const droppedFile = e.dataTransfer.files[0];
+      
+      // Update file input
+      if (fileInputRef.current) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(droppedFile);
+        fileInputRef.current.files = dataTransfer.files;
+      }
+      
+      // Process file
+      handleFileChange({ target: { files: [droppedFile] } });
+    }
+  };
+
+  // Handle upload button click
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!file) {
+      setError('Please select an image to upload.');
+      return;
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Upload image
+      const response = await api.uploadImage(file);
+      
+      // Navigate to results page
+      navigate(`/results/${response.image_id}`);
+    } catch (err) {
+      setError(err.message || 'Failed to upload image. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Clear selected file
+  const handleClear = () => {
+    setFile(null);
+    setPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  return (
+    <div className="image-upload">
+      <h2>Upload a Clothing Image</h2>
+      <p className="upload-description">
+        Upload a picture of clothing to find exact matches and where to buy them.
+      </p>
+      
+      <form onSubmit={handleSubmit}>
+        <div 
+          className="drop-area"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onClick={handleUploadClick}
+        >
+          {preview ? (
+            <div className="preview-container">
+              <img src={preview} alt="Preview" className="image-preview" />
+              <button 
+                type="button" 
+                className="clear-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClear();
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <div className="upload-placeholder">
+              <div className="upload-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <p>Drag & drop your image here or click to browse</p>
+              <p className="upload-hint">Supports JPG, PNG, WEBP (max 16MB)</p>
+            </div>
+          )}
+          
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+            className="file-input"
+          />
+        </div>
+        
+        {error && <p className="error-message">{error}</p>}
+        
+        <button 
+          type="submit" 
+          className="upload-button"
+          disabled={loading || !file}
+        >
+          {loading ? 'Uploading...' : 'Find Matching Clothing'}
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ImageUpload;

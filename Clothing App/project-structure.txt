@@ -1,0 +1,55 @@
+clothing-recognition-app/
+├── backend/                      # FastAPI backend
+│   ├── app/
+│   │   ├── api/                  # API endpoints
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py           # Authentication routes
+│   │   │   ├── images.py         # Image upload and processing routes
+│   │   │   └── products.py       # Product search and results routes
+│   │   ├── core/                 # Core application code
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py         # Configuration settings
+│   │   │   └── security.py       # Security utilities
+│   │   ├── db/                   # Database models and utilities
+│   │   │   ├── __init__.py
+│   │   │   ├── database.py       # Database connection
+│   │   │   └── models.py         # SQLAlchemy models
+│   │   ├── ml/                   # Machine learning modules
+│   │   │   ├── __init__.py
+│   │   │   ├── image_processor.py  # Image preprocessing
+│   │   │   ├── feature_extractor.py  # Feature extraction from images
+│   │   │   └── vector_search.py   # FAISS vector search implementation
+│   │   ├── services/             # Business logic services
+│   │   │   ├── __init__.py
+│   │   │   ├── ecommerce.py      # E-commerce API integration
+│   │   │   └── search_history.py # User search history service
+│   │   └── __init__.py
+│   ├── tests/                    # Backend tests
+│   │   └── __init__.py
+│   ├── .env                      # Environment variables
+│   ├── requirements.txt          # Python dependencies
+│   └── main.py                   # FastAPI application entry point
+├── frontend/                     # React frontend
+│   ├── public/                   # Public assets
+│   ├── src/
+│   │   ├── components/           # Reusable UI components
+│   │   │   ├── ImageUpload.jsx   # Image upload component
+│   │   │   ├── ProductCard.jsx   # Product display card
+│   │   │   ├── SearchHistory.jsx # Search history component
+│   │   │   └── ...
+│   │   ├── pages/               # Page components
+│   │   │   ├── Home.jsx         # Homepage with upload interface
+│   │   │   ├── Results.jsx      # Search results page
+│   │   │   ├── History.jsx      # Search history page
+│   │   │   └── ...
+│   │   ├── services/            # API service clients
+│   │   │   ├── api.js           # API client
+│   │   │   └── auth.js          # Authentication service
+│   │   ├── styles/              # CSS/SASS styles
+│   │   ├── App.jsx              # Main application component
+│   │   └── index.jsx            # Application entry point
+│   ├── package.json             # Node.js dependencies
+│   └── README.md                # Frontend documentation
+├── docker-compose.yml           # Docker services configuration
+├── .gitignore                   # Git ignore file
+└── README.md                    # Project documentation

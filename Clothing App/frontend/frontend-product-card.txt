@@ -1,0 +1,88 @@
+import React from 'react';
+import '../styles/ProductCard.css';
+
+const ProductCard = ({ product }) => {
+  const {
+    product_id,
+    similarity_score,
+    brand,
+    name,
+    category,
+    description,
+    price,
+    currency,
+    image_url,
+    product_url
+  } = product;
+  
+  // Format price with currency
+  const formatPrice = (price, currency) => {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency || 'USD',
+    });
+    
+    return formatter.format(price);
+  };
+  
+  // Format similarity score as percentage
+  const formatSimilarity = (score) => {
+    return `${Math.round(score * 100)}%`;
+  };
+  
+  // Handle buy now button click
+  const handleBuyNow = () => {
+    window.open(product_url, '_blank');
+  };
+  
+  // Fallback image in case the product image fails to load
+  const handleImageError = (e) => {
+    e.target.src = '/placeholder-product.png';
+  };
+  
+  return (
+    <div className="product-card">
+      <div className="product-image">
+        <img 
+          src={image_url} 
+          alt={name} 
+          onError={handleImageError}
+        />
+        <div className="similarity-badge">
+          <span>Match: {formatSimilarity(similarity_score)}</span>
+        </div>
+      </div>
+      
+      <div className="product-info">
+        <h3 className="product-brand">{brand}</h3>
+        <h4 className="product-name">{name}</h4>
+        
+        <div className="product-category">
+          <span>{category}</span>
+        </div>
+        
+        <p className="product-description">
+          {description.length > 100 
+            ? `${description.substring(0, 100)}...` 
+            : description
+          }
+        </p>
+        
+        <div className="product-footer">
+          <div className="product-price">
+            {formatPrice(price, currency)}
+          </div>
+          
+          <button 
+            className="buy-button"
+            onClick={handleBuyNow}
+          >
+            Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;

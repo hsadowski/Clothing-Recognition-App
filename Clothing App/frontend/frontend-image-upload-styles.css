@@ -1,0 +1,142 @@
+.image-upload {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-upload h2 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.upload-description {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--secondary-text);
+}
+
+.drop-area {
+  border: 2px dashed var(--primary-light);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.drop-area:hover {
+  border-color: var(--primary-color);
+  background-color: #f9f9f9;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.upload-icon {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.upload-hint {
+  font-size: 0.85rem;
+  color: var(--secondary-text);
+  margin-top: 0.5rem;
+}
+
+.file-input {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.preview-container {
+  width: 100%;
+  max-height: 300px;
+  position: relative;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.clear-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.clear-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.upload-button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.upload-button:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+}
+
+.upload-button:disabled {
+  background-color: var(--divider-color);
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .image-upload {
+    padding: 1.5rem;
+  }
+  
+  .drop-area {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+}
